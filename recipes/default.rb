@@ -1,12 +1,11 @@
 package "curl"
 
 group node[:embulk][:group] do
-  system true
 end
 
 user node[:embulk][:user] do
-  system true
   group  node[:embulk][:group]
+	manage_home true
 end
 
 bash "download embulk.jar" do
@@ -36,7 +35,7 @@ end
 template "#{node[:embulk][:lib_dir]}/Gemfile" do
   owner    node[:embulk][:user]
   group    node[:embulk][:group]
-  mode     0744
+  mode     0644
   source   "Gemfile.erb"
   notifies :run, "bash[embulk-bundle-install]", :immediately
 end
