@@ -1,5 +1,14 @@
 package "curl"
 
+group node[:embulk][:group] do
+  system true
+end
+
+user node[:embulk][:user] do
+  system true
+  group  node[:embulk][:group]
+end
+
 bash "download embulk.jar" do
   user  node[:embulk][:user]
   group node[:embulk][:group]
@@ -8,15 +17,6 @@ bash "download embulk.jar" do
   chmod +x #{node[:embulk][:jar]}
 EOC
   creates node[:embulk][:jar]
-end
-
-group node[:embulk][:group] do
-  system true
-end
-
-user node[:embulk][:user] do
-  system true
-  group  node[:embulk][:group]
 end
 
 template node[:embulk][:bin] do
