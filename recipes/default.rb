@@ -26,16 +26,11 @@ template node[:embulk][:bin] do
   source "embulk.erb"
 end
 
-directory node[:embulk][:lib_dir] do
-  owner node[:embulk][:user]
-  group node[:embulk][:group]
-  mode  0755
-end
-
-directory node[:embulk][:config_dir] do
-  owner node[:embulk][:user]
-  group node[:embulk][:group]
-  mode  0755
+bash "embulk-mkbundle" do
+  not_if { Dir.exists?("#{node[:embulk][:lib_dir]}") }
+  user   node[:embulk][:user]
+  group  node[:embulk][:group]
+	code   "#{node[:embulk][:jar]} mkbundle #{node[:embulk][:lib_dir]}"
 end
 
 template "#{node[:embulk][:lib_dir]}/Gemfile" do
@@ -50,5 +45,5 @@ bash "embulk-bundle-install" do
   action :nothing
   user   node[:embulk][:user]
   group  node[:embulk][:group]
-  code   "#{node[:embulk][:jar]} bundle #{node[:embulk][:lib_dir]}"
+  code   "#{node[:embulk][:jar]} bundle"
 end
