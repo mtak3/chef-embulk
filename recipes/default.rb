@@ -9,8 +9,8 @@ user node[:embulk][:user] do
 end
 
 bash "download embulk.jar" do
-  user  node[:embulk][:user]
-  group node[:embulk][:group]
+  user  "root"
+  group "root"
   code  <<-EOC
   curl -L #{node[:embulk][:download_uri]} -o #{node[:embulk][:jar]}
   chmod +x #{node[:embulk][:jar]}
@@ -19,8 +19,8 @@ EOC
 end
 
 template node[:embulk][:bin] do
-  owner  node[:embulk][:user]
-  group  node[:embulk][:group]
+  owner  "root"
+  group  "root"
   mode   0755
   source "embulk.erb"
 end
