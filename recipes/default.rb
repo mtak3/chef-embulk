@@ -44,5 +44,6 @@ bash "embulk-bundle-install" do
   action :nothing
   user   node[:embulk][:user]
   group  node[:embulk][:group]
+	cwd    "#{node[:embulk][:lib_dir]}"
   code   "#{node[:embulk][:jar]} bundle"
 end
